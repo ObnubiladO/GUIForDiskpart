@@ -17,7 +17,7 @@
             <Separator />
         </ContextMenu>
     </UserControl.ContextMenu>
-    <Button x:Name="UnallocatedEntryButton" MinWidth="150" MinHeight="100" HorizontalContentAlignment="Right" Click="Button_Click" Background="#FFA5A4A4" Width="220" Height="100">
+    <Button x:Name="UnallocatedEntryButton" MinWidth="150" MinHeight="100" HorizontalContentAlignment="Right" Click="Button_Click" Background="{DynamicResource ThemeTileBrush}" Width="220" Height="100">
         <Grid Width="220" Height="100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>

@@ -3,6 +3,7 @@ using System.Windows;
 
 using GUIForDiskpart.Utils;
 using GUIForDiskpart.Model.Logic;
+using GUIForDiskpart.Presentation;
 
 
 namespace GUIForDiskpart
@@ -26,6 +27,7 @@ namespace GUIForDiskpart
         {
             base.OnStartup(e);
             Instance = this;
+            ThemeManager.Initialize();
             
             Initialize();
         }

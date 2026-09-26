@@ -2,6 +2,7 @@
 using System.Windows;
 
 using GUIForDiskpart.Presentation.View.UserControls;
+using GUIForDiskpart.Presentation;
 
 
 namespace GUIForDiskpart.Presentation.View.Windows
@@ -46,6 +47,12 @@ namespace GUIForDiskpart.Presentation.View.Windows
         public MainWindow()
         {
             InitializeComponent();
+            DarkModeMenuItem.IsChecked = ThemeManager.IsDarkMode;
+        }
+
+        private void DarkMode_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeManager.SetDarkMode(DarkModeMenuItem.IsChecked);
         }
 
         protected override void OnContentRendered(EventArgs e)

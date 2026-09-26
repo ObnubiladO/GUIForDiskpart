@@ -64,6 +64,7 @@ namespace GUIForDiskpart.Service
         private static void StoreDisksInList()
         {
             managementObjectDisks = diskRetriever.GetAllWMIObjects();
+            diskRetriever.LoadMediaTypes();
 
             foreach (ManagementObject disk in managementObjectDisks)
             {

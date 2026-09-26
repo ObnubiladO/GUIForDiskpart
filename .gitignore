@@ -1,6 +1,8 @@
 .vs/
 obj/
+bin/
 builds/
+artifacts/
 textfiles/
 build.bat
 cmd.exe.lnk

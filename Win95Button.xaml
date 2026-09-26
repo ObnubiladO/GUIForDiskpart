@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--https://github.com/vddCore/Windows95-WPF/tree/master-->
     <Style TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#C3C3C3" />
+        <Setter Property="Background" Value="{DynamicResource ThemeButtonBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -12,14 +13,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border BorderThickness="0,0,1,1"
-                            BorderBrush="Black"
+                            BorderBrush="{DynamicResource ThemeBevelDarkBrush}"
                             Background="{TemplateBinding Background}"
                             Name="PART_BlackOutline">
                         <Grid>
                             <Border HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     BorderThickness="1,1,0,0"
-                                    BorderBrush="White" 
+                                    BorderBrush="{DynamicResource ThemeBevelLightBrush}"
                                     Background="Transparent" 
                                     Name="PART_WhiteHighlight"/>
 
@@ -27,7 +28,7 @@
                                     VerticalAlignment="Stretch"
                                     Margin="1,1,0,0"
                                     BorderThickness="0,0,1,1"
-                                    BorderBrush="#828282" 
+                                    BorderBrush="{DynamicResource ThemeBevelShadowBrush}"
                                     Name="PART_DarkerHighlight" />
 
                             <Border BorderThickness="1" x:Name="PART_FocusStroke"
@@ -37,7 +38,7 @@
                                     <DrawingBrush Viewport="0,0,2,2" ViewportUnits="Absolute" TileMode="Tile">
                                         <DrawingBrush.Drawing>
                                             <DrawingGroup>
-                                                <GeometryDrawing Brush="Black">
+                                                <GeometryDrawing Brush="{DynamicResource ThemeTextBrush}">
                                                     <GeometryDrawing.Geometry>
                                                         <GeometryGroup>
                                                             <RectangleGeometry Rect="0,0,50,50" />
@@ -59,10 +60,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_BlackOutline" Property="BorderBrush" Value="White" />
-                            <Setter TargetName="PART_DarkerHighlight" Property="BorderBrush" Value="#DFDFDF" />
-                            <Setter TargetName="PART_WhiteHighlight" Property="BorderBrush" Value="Black" />
-                            <Setter Property="Background" Value="#C0C0C0" />
+                            <Setter TargetName="PART_BlackOutline" Property="BorderBrush" Value="{DynamicResource ThemeBevelLightBrush}" />
+                            <Setter TargetName="PART_DarkerHighlight" Property="BorderBrush" Value="{DynamicResource ThemePressedHighlightBrush}" />
+                            <Setter TargetName="PART_WhiteHighlight" Property="BorderBrush" Value="{DynamicResource ThemeBevelDarkBrush}" />
+                            <Setter Property="Background" Value="{DynamicResource ThemePressedBrush}" />
                         </Trigger>
 
                         <Trigger Property="IsFocused" Value="True">

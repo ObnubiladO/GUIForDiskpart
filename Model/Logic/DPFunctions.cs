@@ -452,6 +452,22 @@ namespace GUIForDiskpart.Model.Logic.Diskpart
             return ExecuteInternal(commands);
         }
 
+        public static string Remove(uint diskIndex, uint partitionIndex, char driveLetter, bool isNoErr)
+        {
+            string[] commands = new string[3];
+
+            commands[0] = $"{Basics.SELECT} {Basics.DISK} {diskIndex}";
+            commands[1] = $"{Basics.SELECT} {Basics.PARTITION} {partitionIndex}";
+            commands[2] = $"{Database.Data.DP.Remove.REMOVE} {Basics.LETTER}={driveLetter} ";
+
+            if (isNoErr)
+            {
+                commands[2] += $"{Basics.NOERR} ";
+            }
+
+            return ExecuteInternal(commands);
+        }
+
         public static string Remove(char driveLetter, string mountPath, bool isDismount, bool isNoErr)
         {
             string[] commands = new string[2];

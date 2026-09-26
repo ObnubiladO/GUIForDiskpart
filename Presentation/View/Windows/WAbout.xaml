@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:GUIForDiskpart.Presentation.View.Windows"
         mc:Ignorable="d"
         Title="About" ResizeMode="NoResize" Height="250" Width="400">
-    <Grid Background="#FF8C8C8C">
-        <Label Content="GUIForDiskpart (guifd.exe)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF292929"/>
-        <Label Content="Build:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Foreground="#FF292929"/>
-        <Label x:Name="BuildNumberValue" Content="Value" HorizontalAlignment="Left" Margin="161,31,0,0" VerticalAlignment="Top" Foreground="#FF292929"/>
-        <Label Content="by LumiToad" HorizontalAlignment="Left" Margin="14,73,0,0" VerticalAlignment="Top" Foreground="#FF292929"/>
+    <Grid Background="{DynamicResource ThemeWindowBrush}">
+        <Label Content="GUIForDiskpart (guifd.exe)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="{DynamicResource ThemeTextBrush}"/>
+        <Label Content="Build:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Foreground="{DynamicResource ThemeTextBrush}"/>
+        <Label x:Name="BuildNumberValue" Content="Value" HorizontalAlignment="Left" Margin="161,31,0,0" VerticalAlignment="Top" Foreground="{DynamicResource ThemeTextBrush}"/>
+        <Label Content="by LumiToad" HorizontalAlignment="Left" Margin="14,73,0,0" VerticalAlignment="Top" Foreground="{DynamicResource ThemeTextBrush}"/>
         <Image Source="/Resources/FroggoCorner.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" Height="64" Width="64" Margin="21,99,0,0"/>
 
     </Grid>

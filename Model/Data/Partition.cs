@@ -66,10 +66,10 @@ namespace GUIForDiskpart.Model.Data
         {
             bool retVal = false;
             if (WMI == null && WSM == null) return retVal;
-            if (WSM != null) retVal = WSM.DriveLetter > 65;
+            if (WSM != null) retVal = WSM.DriveLetter >= 'A' && WSM.DriveLetter <= 'Z';
             if (!retVal && WMI != null && WMI.LDModel != null && !string.IsNullOrWhiteSpace(WMI.LDModel.DriveLetter))
             { 
-                retVal = WMI.LDModel.DriveLetter[0] > 65; 
+                retVal = WMI.LDModel.DriveLetter[0] >= 'A' && WMI.LDModel.DriveLetter[0] <= 'Z';
             }
 
             return retVal;
@@ -80,11 +80,11 @@ namespace GUIForDiskpart.Model.Data
             char retVal = ' ';
             if (!HasDriveLetter()) return retVal;
 
-            if (WSM.DriveLetter > 65)
+            if (WSM != null && WSM.DriveLetter >= 'A' && WSM.DriveLetter <= 'Z')
             {
                 retVal = WSM.DriveLetter;
             }
-            else if (WMI.LDModel.DriveLetter[0] > 65)
+            else if (WMI?.LDModel?.DriveLetter?.Length > 0 && WMI.LDModel.DriveLetter[0] >= 'A' && WMI.LDModel.DriveLetter[0] <= 'Z')
             {
                 retVal = WMI.LDModel.DriveLetter[0];
             }

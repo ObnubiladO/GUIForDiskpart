@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="ShrinkWindow" Height="300" Width="650"
         ResizeMode="NoResize">
-    <Grid x:Name="MainGrid" Background="#FF8C8C8C">
+    <Grid x:Name="MainGrid" Background="{DynamicResource ThemeWindowBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
@@ -28,13 +28,13 @@
                 <TextBox x:Name="MinimumSizeValue" TextWrapping="Wrap" Text="0" Width="120" InputScope="Number" TextChanged="MinimumSizeValue_TextChanged"/>
                 <Label x:Name="MinFormatted" Content=""/>
             </StackPanel>
-            <Slider x:Name="MinimumSlider" Width="247" Maximum="100" ValueChanged="MinimumSlider_ValueChanged" HorizontalAlignment="Left"/>
+            <Slider x:Name="MinimumSlider" Width="247" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="MinimumSlider_ValueChanged" HorizontalAlignment="Left"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Label Content="Desired size in MB:" Padding="2,2,2,2"/>
                 <TextBox x:Name="DesiredSizeValue" TextWrapping="Wrap" Text="0" Width="120" InputScope="Number" Margin="10,0,0,0" TextChanged="DesiredSizeValue_TextChanged"/>
                 <Label x:Name="DesiredFormatted" Content=""/>
             </StackPanel>
-            <Slider x:Name="DesiredSlider" Width="247" Maximum="100" HorizontalAlignment="Left" ValueChanged="DesiredSlider_ValueChanged"/>
+            <Slider x:Name="DesiredSlider" Width="247" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" ValueChanged="DesiredSlider_ValueChanged"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,15,0,0">
                 <Button x:Name="ConfirmButton" Content="Shrink" Click="ConfirmButton_Click"/>
                 <Button x:Name="CancelButton" Content="Cancel" IsCancel="True"  Click="CancelButton_Click" Margin="20,0,0,0"/>

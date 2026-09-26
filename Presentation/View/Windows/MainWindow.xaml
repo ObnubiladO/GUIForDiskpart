@@ -18,7 +18,7 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    <Grid x:Name="MainGrid" Background="#FF8C8C8C">
+    <Grid x:Name="MainGrid" Background="{DynamicResource ThemeWindowBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="35*"/>
             <RowDefinition Height="197*"/>
@@ -79,6 +79,10 @@
                     </MenuItem>
                 </MenuItem>
 
+                <MenuItem Header="View">
+                    <MenuItem x:Name="DarkModeMenuItem" Header="Dark mode" IsCheckable="True" Click="DarkMode_Click"/>
+                </MenuItem>
+
                 <MenuItem x:Name="Help" Header="Help">
                     <MenuItem Header="About" Click="About_Click"/>
                     <MenuItem Header="To Wiki" Click="Wiki_Click"/>
@@ -92,7 +96,7 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="120"/>
-                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="Auto" MinHeight="135"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="3"/>
                     <RowDefinition Height="200"/>

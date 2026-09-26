@@ -43,7 +43,7 @@
         </ContextMenu>
 
     </UserControl.ContextMenu>
-    <Button x:Name="DiskEntryButton" MinWidth="150" MinHeight="100" HorizontalContentAlignment="Right" Click="Button_Click" Background="#FFA5A4A4">
+    <Button x:Name="DiskEntryButton" MinWidth="150" MinHeight="100" HorizontalContentAlignment="Right" Click="Button_Click" Background="{DynamicResource ThemeTileBrush}">
         <Grid Width="220" Height="100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0"/>
@@ -66,7 +66,7 @@
                 <StackPanel Height="100"/>
             </StackPanel>
             <Button Grid.Column="3" Click="OpenContextMenu_Click" Content="..." HorizontalAlignment="Left" Height="20" Width="20" VerticalContentAlignment="Center" VerticalAlignment="Bottom"/>
-            <Border Grid.Column="3" Height="80" Width="19" BorderThickness="2,2,2,2" BorderBrush="#FF676767" CornerRadius="0.2,0.2,0.2,0.2" VerticalAlignment="Top" HorizontalAlignment="Left" >
+            <Border Grid.Column="3" Height="80" Width="19" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource ThemeBorderBrush}" CornerRadius="0.2,0.2,0.2,0.2" VerticalAlignment="Top" HorizontalAlignment="Left" >
                 <ProgressBar x:Name="SizeBar" RenderTransformOrigin="0.5,0.5" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Orientation="Vertical" BorderBrush="DimGray" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" BorderThickness="0,0,0,0" Value="0" Height="76" ToolTip="Blue - used space | This only takes Logical Drives into account.">
                     <ProgressBar.RenderTransform>
                         <TransformGroup>

@@ -4,21 +4,20 @@
     <OutputType>WinExe</OutputType>
 	<DebugType>embedded</DebugType>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <TargetFramework>net6.0-windows</TargetFramework>
-	<RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <TargetFramework>net10.0-windows</TargetFramework>
 	<PublishSingleFile>true</PublishSingleFile>  
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>main\app.manifest</ApplicationManifest>
 	<Deterministic>false</Deterministic>
-	<Version>1.0.1658</Version>
-	<AssemblyVersion>1.1.0000.0</AssemblyVersion>
-	<FileVersion>1.0.2402.0</FileVersion>
+	<Version>1.1.0-rc.1</Version>
+	<AssemblyVersion>1.1.0.0</AssemblyVersion>
+	<FileVersion>1.1.0.0</FileVersion>
 	<Copyright>MIT License</Copyright>
 	<ApplicationIcon>resources\guifdLogo.ico</ApplicationIcon>
 	<Platforms>AnyCPU;x64;x86</Platforms>
 	<PlatformTarget>AnyCPU</PlatformTarget>
-	<BaseOutputPath>E:\GitHub_Repos\GUIForDiskpart\builds</BaseOutputPath>
+	<BaseOutputPath>builds\</BaseOutputPath>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
@@ -49,6 +48,7 @@
 
   <ItemGroup>
     <Compile Remove="Main\ProcessHandler.cs" />
+    <Compile Remove="tests\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,9 +56,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
-    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.16" />
-    <PackageReference Include="System.Management" Version="7.0.2" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.6.6" />
+    <PackageReference Include="System.Management" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>

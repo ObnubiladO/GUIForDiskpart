@@ -1,6 +1,7 @@
 ﻿global using PAssignLetter =
     GUIForDiskpart.Presentation.Presenter.Windows.PAssignLetter<GUIForDiskpart.Presentation.View.Windows.WAssignLetter>;
 
+using System;
 using System.Windows;
 
 using GUIForDiskpart.Model.Data;
@@ -62,7 +63,7 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
             string output = string.Empty;
             char letter = WSM.DriveLetter;
 
-            output += DPFunctions.Remove(letter, false, true);
+            output += DPFunctions.Remove(WSM.DiskNumber, WSM.PartitionNumber, letter, false);
 
             MainWindow.Log.Print(output);
             MainWindow.UpdatePanels(false);
@@ -87,6 +88,17 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
             Close();
         }
 
+        private void OnDiskChanged()
+        {
+            Window.Dispatcher.BeginInvoke(PopulateDriveLetterBox);
+        }
+
+        private void OnWindowClosed(object? sender, EventArgs e)
+        {
+            DiskService.EDiskChange -= OnDiskChanged;
+            Window.Closed -= OnWindowClosed;
+        }
+
         #endregion OnClick
 
         #region WPresenter
@@ -94,10 +106,15 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
         public override void Setup()
         {
             PopulateDriveLetterBox();
-            DiskService.EDiskChange += PopulateDriveLetterBox;
+            DiskService.EDiskChange += OnDiskChanged;
+            Window.Closed += OnWindowClosed;
 
             Log.Print(WSM.GetOutputAsString(), true);
-            if (WSM != null && WSM.DriveLetter == '\0')
+            if (WSM.DriveLetter >= 'A' && WSM.DriveLetter <= 'Z')
+            {
+                Window.RemoveButton.Content = $"Remove {WSM.DriveLetter}:";
+            }
+            else
             {
                 Window.RemoveButton.IsEnabled = false;
                 Window.RemoveButton.Foreground = System.Windows.Media.Brushes.DarkGray;

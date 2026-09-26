@@ -46,6 +46,14 @@
   <hr />
   <h2>Engines / Languages</h2>
   C#, XAML, Microsoft WPF, WQL, PowerShell, Batch 
+
+  <hr />
+  <h2>Build from source</h2>
+  On Windows, install the .NET 10 SDK and run:
+  <pre>dotnet test GUIForDiskpart.sln --configuration Release
+dotnet publish GUIForDiskpart.csproj -p:PublishProfile=FolderProfile_x64
+dotnet publish GUIForDiskpart.csproj -p:PublishProfile=FolderProfile_x86</pre>
+  Self-contained executables go to <code>builds/export_x64/</code> and <code>builds/export_x86/</code>. The application requests administrator privileges when launched because Diskpart operations require them.
   
   <hr />
   <h2>Features</h2>
@@ -59,6 +67,8 @@
   </ul>
   
   A more detailed walkthrough of the features can be found in the <a href="https://github.com/LumiToad/GUIForDiskpart/wiki">WIKI</a>!
+  To remove a drive letter, open a partition's context menu, choose <b>DISKPART - Assign / Remove</b>, then use the button labeled with its current letter.
+  Use <b>View &gt; Dark mode</b> to switch the interface theme. The selection is saved for the next launch.
 
   <hr />
   <h2>Example scripts</h2>
@@ -79,7 +89,7 @@
     <img src="https://github.com/LumiToad/LumiToad/blob/main/img/banner/github_gui_banner.png" alt="gui banner" />
   </a>
 
-  <a href="https://github.com/LumiToad/GUIForDiskpart/releases/tag/1.1.0000.0-beta">Download</a> from the releases page!
+  <a href="https://github.com/ObnubiladO/GUIForDiskpart/releases/tag/v1.1.0-rc.1">Download the release candidate</a> for Windows x64 or x86.
 
   Main logo artwork by Lars Rocksch:
   - https://www.linkedin.com/in/lars-rocksch-10828a234/

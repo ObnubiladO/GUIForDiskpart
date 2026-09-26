@@ -2,7 +2,6 @@
    GUIForDiskpart.Presentation.Presenter.Windows.PExtend<GUIForDiskpart.Presentation.View.Windows.WExtend>;
 
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -34,45 +33,51 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
 
         private UInt64 availableInByte;
         private UInt64 desiredInByte;
+        private const UInt64 BYTES_PER_MB = 1024UL * 1024UL;
+        private bool updatingSizeControls;
+
+        private UInt64 AvailableInMB => Math.Min(availableInByte / BYTES_PER_MB, UInt32.MaxValue);
 
         private void OnDesiredSizeValue_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Window.DesiredSizeValue.Text = Window.DesiredSizeValue.Text.RemoveAllButNumbers();
-            if (!UInt64.TryParse(Window.DesiredSizeValue.Text, out UInt64 value))
-            {
-                SetDesiredTextBox(0);
-                value = 0;
-            }
+            if (updatingSizeControls) return;
 
-            desiredInByte = ByteFormatter.SizeFromTo<UInt64, UInt64>(value, Unit.MB, Unit.B);
-            OnDesiredSizeChanged(sender);
+            updatingSizeControls = true;
+            try
+            {
+                string digits = Window.DesiredSizeValue.Text.RemoveAllButNumbers();
+                if (Window.DesiredSizeValue.Text != digits)
+                {
+                    Window.DesiredSizeValue.Text = digits;
+                    Window.DesiredSizeValue.CaretIndex = digits.Length;
+                }
+
+                UInt64.TryParse(digits, out UInt64 value);
+                value = Math.Min(value, AvailableInMB);
+                desiredInByte = value * BYTES_PER_MB;
+                Window.DesiredSlider.Value = value;
+                if (digits.Length > 0 && digits != value.ToString())
+                {
+                    Window.DesiredSizeValue.Text = value.ToString();
+                    Window.DesiredSizeValue.CaretIndex = Window.DesiredSizeValue.Text.Length;
+                }
+                SetFormattedLabel(desiredInByte);
+            }
+            finally { updatingSizeControls = false; }
         }
 
         private void OnDesiredSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            desiredInByte = System.Convert.ToUInt64(Window.DesiredSlider.Value);
-            OnDesiredSizeChanged(sender);
-        }
+            if (updatingSizeControls) return;
 
-        private void OnDesiredSizeChanged(object sender)
-        {
-            if (desiredInByte > availableInByte)
+            updatingSizeControls = true;
+            try
             {
-                desiredInByte = availableInByte;
+                desiredInByte = System.Convert.ToUInt64(Window.DesiredSlider.Value) * BYTES_PER_MB;
                 SetDesiredTextBox(desiredInByte);
+                SetFormattedLabel(desiredInByte);
             }
-
-            if (sender == Window.DesiredSlider)
-            {
-                SetDesiredTextBox(desiredInByte);
-            }
-
-            if (sender == Window.DesiredSizeValue)
-            {
-                SetSliderValue(desiredInByte);
-            }
-
-            SetFormattedLabel(desiredInByte);
+            finally { updatingSizeControls = false; }
         }
 
         public void SetupSlider(double min, double max)
@@ -95,6 +100,13 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
         public void SetAvailableLabel(ulong size)
         {
             Window.AvailableLabel.Content = ByteFormatter.BytesToAsString(size);
+        }
+
+        internal void ConfigureAvailableSize(ulong size)
+        {
+            availableInByte = size;
+            SetupSlider(0.0d, AvailableInMB);
+            SetAvailableLabel(size);
         }
 
         public void SetDesiredTextBox(ulong size)
@@ -146,9 +158,7 @@ namespace GUIForDiskpart.Presentation.Presenter.Windows
             output += Partition.DefragAnalysis.GetOutputAsString();
             Log.Print(output);
 
-            availableInByte = Partition.DefragAnalysis.AvailableForExtend;
-            SetupSlider(0.0d, availableInByte);
-            SetAvailableLabel(availableInByte);
+            ConfigureAvailableSize(Partition.DefragAnalysis.AvailableForExtend);
         }
 
         protected override void AddCustomArgs(params object?[] args)

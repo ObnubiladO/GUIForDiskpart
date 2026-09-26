@@ -8,7 +8,7 @@
         xmlns:userControls="clr-namespace:GUIForDiskpart.Presentation.View.UserControls"
         mc:Ignorable="d"
         Title="Create Partition" Height="270" Width="530">
-    <Grid x:Name="MainGrid" Background="#FF8C8C8C">
+    <Grid x:Name="MainGrid" Background="{DynamicResource ThemeWindowBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>

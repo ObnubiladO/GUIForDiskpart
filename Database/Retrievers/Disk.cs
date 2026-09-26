@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
-using System.Management.Automation;
-
-using GUIForDiskpart.Model.Logic;
 
 
 namespace GUIForDiskpart.Database.Retrievers
@@ -15,10 +13,33 @@ namespace GUIForDiskpart.Database.Retrievers
         private const string WIN32_DISKDRIVE_QUERY = "select * from Win32_DiskDrive";
         private const string OP_TYPE_PATH = @"root\Microsoft\Windows\Storage";
 
-        private const string MEDIA_TYPE_QUERY = $"$Query.MediaType";
-        private static string MediaTypeQuery(string name) =>
-            $"$Query = Get-CimInstance -Query \"select * from MSFT_PhysicalDisk WHERE FriendlyName Like '%{name}%'\" -Namespace root\\Microsoft\\Windows\\Storage";
         private static string OPSelectQuery(uint diskIndex) => $"select * from MSFT_Disk WHERE Number={diskIndex}";
+        private readonly Dictionary<string, ushort> mediaTypes = new(StringComparer.OrdinalIgnoreCase);
+
+        public void LoadMediaTypes()
+        {
+            mediaTypes.Clear();
+            try
+            {
+                ManagementScope scope = new(OP_TYPE_PATH);
+                using ManagementObjectSearcher searcher = new(scope, new SelectQuery("SELECT FriendlyName, MediaType FROM MSFT_PhysicalDisk"));
+                using ManagementObjectCollection disks = searcher.Get();
+                foreach (ManagementObject disk in disks)
+                {
+                    string? name = disk["FriendlyName"]?.ToString()?.Trim();
+                    if (string.IsNullOrEmpty(name) || disk["MediaType"] == null) continue;
+                    mediaTypes[name] = System.Convert.ToUInt16(disk["MediaType"]);
+                }
+            }
+            catch (ManagementException)
+            {
+                // Media type is optional metadata; drive loading can continue without it.
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Media type is optional metadata; drive loading can continue without it.
+            }
+        }
 
         public void SetupDiskChangedWatcher()
         {
@@ -52,22 +73,24 @@ namespace GUIForDiskpart.Database.Retrievers
 
         public ushort? GetMediaTypeValue(string friendlyName)
         {
-            if (string.IsNullOrEmpty(friendlyName)) return null;
+            return MatchMediaType(friendlyName, mediaTypes);
+        }
 
-            ushort? result = null;
+        internal static ushort? MatchMediaType(string friendlyName, IReadOnlyDictionary<string, ushort> mediaTypes)
+        {
+            if (string.IsNullOrWhiteSpace(friendlyName)) return null;
 
-            foreach (var name in friendlyName.Split(new[] { ' ', '-', '_', ':' }))
-            {
-                string[] commands = new string[2];
-                commands[0] += MediaTypeQuery(name);
-                commands[1] += MEDIA_TYPE_QUERY;
-                List<PSObject> psObjects = CommandExecuter.IssuePowershellCommand(commands);
-                PSObject? data = psObjects[0];
+            friendlyName = friendlyName.Trim();
+            if (mediaTypes.TryGetValue(friendlyName, out ushort exactMatch)) return exactMatch;
 
-                if (data == null) continue;
-                result = (ushort)data.BaseObject;
-            }
-            return result;
+            // Win32_DiskDrive sometimes appends a device suffix to the storage name.
+            var matches = mediaTypes.Where(item => friendlyName.Contains(item.Key, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(item => item.Key.Length).Take(2).ToArray();
+
+            if (matches.Length == 0 || (matches.Length == 2 && matches[0].Key.Length == matches[1].Key.Length))
+                return null;
+
+            return matches[0].Value;
         }
 
         public ushort[] GetOperationalStatus(uint diskIndex)
